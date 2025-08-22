@@ -1,0 +1,1 @@
+D:\workTest\BooksStore\booksstore.client\obj\Debug\booksstore.client.esproj.CoreCompileInputs.cache
