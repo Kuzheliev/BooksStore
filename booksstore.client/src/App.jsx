@@ -1,22 +1,52 @@
 import React, { useState } from "react";
-import LoginForm from "./Login"; 
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
+import LoginForm from "./Login";
 import UpdateButton from "./UpdateButton";
-    
+import "./App.css";
+
+function Home({ token, user, handleLogout }) {
+    return (
+        <div className="app-container">
+            {/* Header */}
+            <div className="header">
+                <h1>
+                    {token ? `Welcome, ${user.username || "User"}!` : "Books Store Admin"}
+                </h1>
+
+                <div className="header-buttons">
+                    {!token && <Link to="/login"><button className="btn login-btn">Login</button></Link>}
+                    {token && (
+                        <button onClick={handleLogout} className="btn logout-btn">
+                            Logout
+                        </button>
+                    )}
+                </div>
+            </div>
+
+            {/* Protected button */}
+            {token && <UpdateButton productId={1} />}
+        </div>
+    );
+}
+
 function App() {
     const [token, setToken] = useState(localStorage.getItem("token"));
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem("user") || "{}"));
-    const [showLogin, setShowLogin] = useState(false); // controls login form display
+    const [user, setUser] = useState(() => {
+        try {
+            return JSON.parse(localStorage.getItem("user")) || {};
+        } catch {
+            return {};
+        }
+    });
 
-    // Handler after successful login
-    const handleLogin = (token, userData) => {
+    const handleLogin = (token, userData, navigate) => {
         localStorage.setItem("token", token);
         localStorage.setItem("user", JSON.stringify(userData));
         setToken(token);
         setUser(userData);
-        setShowLogin(false); // hide login form after login
+        navigate("/"); // redirect to home after login
     };
 
-    // Logout function
     const handleLogout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
@@ -24,39 +54,28 @@ function App() {
         setUser({});
     };
 
-    // Show login form if showLogin is true
-    if (showLogin) {
-        return <LoginForm onLogin={handleLogin} />;
-    }
-
-    // Main app view
     return (
-        <div className="p-6">
-            <h1 className="text-2xl font-bold mb-4">
-                {token ? `Welcome, ${user.username}!` : "Books Store Admin"}
-            </h1>
+        <Router>
+            <Routes>
+                <Route path="/" element={<Home token={token} user={user} handleLogout={handleLogout} />} />
+                <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
+            </Routes>
+        </Router>
+    );
+}
 
-            {token && <UpdateProductButton productId={1} />}
+function LoginPage({ onLogin }) {
+    const navigate = useNavigate();
 
-            <div className="mt-4">
-                {!token && (
-                    <button
-                        onClick={() => setShowLogin(true)}
-                        className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
-                    >
-                        Go to Login
-                    </button>
-                )}
+    const handleLogin = (token, userData) => {
+        onLogin(token, userData, navigate);
+    };
 
-                {token && (
-                    <button
-                        onClick={handleLogout}
-                        className="bg-red-500 text-white px-4 py-2 rounded"
-                    >
-                        Logout
-                    </button>
-                )}
-            </div>
+    return (
+        <div className="app-container">
+            <h1 className="text-2xl font-bold mb-4">Login</h1>
+            <LoginForm onLogin={handleLogin} />
+            <button onClick={() => navigate("/")} className="btn cancel-btn mt-2">Cancel</button>
         </div>
     );
 }

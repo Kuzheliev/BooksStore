@@ -1,11 +1,35 @@
-﻿#root {
-    max-width: 1280px;
-    margin: 0 auto;
-    padding: 2rem;
-    text-align: center;
+﻿.app-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
 }
 
-th, td {
-    padding-left: 1rem;
-    padding-right: 1rem;
+/* Header with title on left and button on right */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Button styles */
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.login-btn {
+    background-color: #2563eb; /* blue */
+}
+
+.logout-btn {
+    background-color: #dc2626; /* red */
+}
+
+.cancel-btn {
+    background-color: #6b7280; /* gray */
+    color: white;
 }
