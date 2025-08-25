@@ -49,14 +49,17 @@ export default defineConfig({
         proxy: {
             '^/book': {
                 target,
+                changeOrigin: true,
                 secure: false
             },
             '^/user': {
                 target,
+                changeOrigin: true,
                 secure: false
             },
             '^/auth/login': {
                 target,
+                changeOrigin: true,
                 secure: false
             },
         },

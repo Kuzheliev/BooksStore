@@ -1,4 +1,5 @@
-﻿using BooksStore.Server.Models;
+﻿using BooksStore.Server.Migrations;
+using BooksStore.Server.Models;
 
 namespace BooksStore.Server.DAL
 {
@@ -19,21 +20,30 @@ namespace BooksStore.Server.DAL
             return _context.Books.FirstOrDefault(x => x.Id == id);
         }
 
-        public IEnumerable<Book> GetBooks()
+        public IQueryable<Book> GetBooks()
         {
-            return _context.Books.ToList();
+            return _context.Books.AsQueryable();
         }
 
-        public async Task<Book?> UpdateAsync(Book updatedBook)
+        public async Task<Book?> GetBookByIdAsync(int id)
         {
-            var product = await _context.Books.FindAsync(updatedBook.Id);
-            if (product == null) return null;
+            return await _context.Books.FindAsync(id); 
+        }
 
-            product.Name = updatedBook.Name;
-            product.Price = updatedBook.Price;
+        public async Task<Book?> UpdateAsync(Book book)
+        {
+            var existing = await _context.Books.FindAsync(book.Id);
+            if (existing == null) return null;
+
+            // Update properties
+            existing.Name = book.Name;
+            existing.Author = book.Author;
+            existing.Genre = book.Genre;
+            existing.Price = book.Price;
+            existing.Description = book.Description;
 
             await _context.SaveChangesAsync();
-            return product;
+            return existing;
         }
     }
 }

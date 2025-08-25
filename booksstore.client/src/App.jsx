@@ -1,35 +1,13 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import LoginForm from "./Login";
 import AuthProvider from "./AuthContext";
 import "./App.css";
 import { useAuth } from "./AuthContext";
+import Home from "./Home";
+import BookDetails from "./BookDetails";
 
-function Home() {
-    const { token, user, logout } = useAuth();
 
-    return (
-        <div>
-            <div className="header">
-                <h1>Books Store</h1>
-                <div className="header-buttons">
-                    {!token ? (
-                        <Link to="/login">
-                            <button className="btn login-btn">Login</button>
-                        </Link>
-                    ) : (
-                        <button onClick={logout} className="btn logout-btn">
-                            Logout
-                        </button>
-                    )}
-                </div>
-            </div>
-            <div className="app-container">
-                {token ? <p>You are logged in.</p> : <p>Please log in to continue.</p>}
-            </div>
-        </div>
-    );
-}
 
 function LoginPage() {
     const { login } = useAuth();
@@ -58,6 +36,8 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<LoginPage />} />
+                    <Route path="/books/:id" element={<BookDetails />} />
+                    <Route path="*" element={<p>Page not found!</p>} /> 
                 </Routes>
             </Router>
         </AuthProvider>

@@ -1,0 +1,44 @@
+
+.search-container {
+    position: absolute; /* fix at top */
+    top: 4rem; /* distance from top of viewport */
+    left: 50%; /* center horizontally */
+    transform: translateX(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* Search input styling */
+.search-input {
+    padding: 0.5rem;
+    width: 300px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+
+/* Books list right under search bar */
+.books-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* center the items horizontally */
+    margin-top: 0.5rem; /* small spacing under search bar */
+    gap: 0.5rem; /* space between book items */
+}
+
+/* Individual book card */
+.book-card {
+    width: 320px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.book-card-link:hover .book-card {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transform: translateY(-2px);
+    transition: 0.2s;
+}
