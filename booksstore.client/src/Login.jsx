@@ -7,17 +7,15 @@ function LoginForm({ onLogin }) {
 
     const handleLogin = async () => {
         try {
-            const response = await axios.post("auth/login", { email, password });
-            const { token, user } = response.data;
+                const response = await axios.post("auth/login", { email, password });
+                const { token, user } = response.data;
 
-            localStorage.setItem("token", token);
-            localStorage.setItem("user", JSON.stringify(user));
+                localStorage.setItem("token", token);
+                localStorage.setItem("user", JSON.stringify(user));
 
-            alert(`Welcome ${user.username}!`);
-            onLogin(token);
+                onLogin(token);
         } catch (err) {
             console.error(err);
-            alert("Login failed!");
         }
     };
 

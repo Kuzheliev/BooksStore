@@ -1,82 +1,66 @@
-import React, { useState } from "react";
+import React, { createContext, useState, useContext } from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import LoginForm from "./Login";
-import UpdateButton from "./UpdateButton";
+import AuthProvider from "./AuthContext";
 import "./App.css";
+import { useAuth } from "./AuthContext";
 
-function Home({ token, user, handleLogout }) {
+function Home() {
+    const { token, user, logout } = useAuth();
+
     return (
-        <div className="app-container">
-            {/* Header */}
+        <div>
             <div className="header">
-                <h1>
-                    {token ? `Welcome, ${user.username || "User"}!` : "Books Store Admin"}
-                </h1>
-
+                <h1>Books Store</h1>
                 <div className="header-buttons">
-                    {!token && <Link to="/login"><button className="btn login-btn">Login</button></Link>}
-                    {token && (
-                        <button onClick={handleLogout} className="btn logout-btn">
+                    {!token ? (
+                        <Link to="/login">
+                            <button className="btn login-btn">Login</button>
+                        </Link>
+                    ) : (
+                        <button onClick={logout} className="btn logout-btn">
                             Logout
                         </button>
                     )}
                 </div>
             </div>
+            <div className="app-container">
+                {token ? <p>You are logged in.</p> : <p>Please log in to continue.</p>}
+            </div>
+        </div>
+    );
+}
 
-            {/* Protected button */}
-            {token && <UpdateButton productId={1} />}
+function LoginPage() {
+    const { login } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLoginSubmit = (token, userData) => {
+        login(token, userData);
+        navigate("/", { replace: true });
+    };
+
+    return (
+        <div className="login-page">
+            <div className="login-box">
+                <h1>Login</h1>
+                <LoginForm onLogin={handleLoginSubmit} />
+                <button onClick={() => navigate("/")} className="btn cancel-btn">Cancel</button>
+            </div>
         </div>
     );
 }
 
 function App() {
-    const [token, setToken] = useState(localStorage.getItem("token"));
-    const [user, setUser] = useState(() => {
-        try {
-            return JSON.parse(localStorage.getItem("user")) || {};
-        } catch {
-            return {};
-        }
-    });
-
-    const handleLogin = (token, userData, navigate) => {
-        localStorage.setItem("token", token);
-        localStorage.setItem("user", JSON.stringify(userData));
-        setToken(token);
-        setUser(userData);
-        navigate("/"); // redirect to home after login
-    };
-
-    const handleLogout = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
-        setToken(null);
-        setUser({});
-    };
-
     return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<Home token={token} user={user} handleLogout={handleLogout} />} />
-                <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
-            </Routes>
-        </Router>
-    );
-}
-
-function LoginPage({ onLogin }) {
-    const navigate = useNavigate();
-
-    const handleLogin = (token, userData) => {
-        onLogin(token, userData, navigate);
-    };
-
-    return (
-        <div className="app-container">
-            <h1 className="text-2xl font-bold mb-4">Login</h1>
-            <LoginForm onLogin={handleLogin} />
-            <button onClick={() => navigate("/")} className="btn cancel-btn mt-2">Cancel</button>
-        </div>
+        <AuthProvider>
+            <Router>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/login" element={<LoginPage />} />
+                </Routes>
+            </Router>
+        </AuthProvider>
     );
 }
 
