@@ -5,7 +5,7 @@ import axios from "axios";
 import "./Home.css";
 
 function Home() {
-    const { token, user, logout } = useAuth();
+    const { token, logout } = useAuth();
     const [searchQuery, setSearchQuery] = useState("");
     const [books, setBooks] = useState([]);
 
@@ -14,7 +14,6 @@ function Home() {
         const delayDebounce = setTimeout(() => {
             const fetchBooks = async () => {
                 try {
-
                     if (!searchQuery.trim()) {
                         setBooks([]);
                         return;
@@ -24,44 +23,44 @@ function Home() {
                         params: { search: searchQuery },
                     });
                     setBooks(response.data);
-
                 } catch (err) {
                     console.error("Error fetching books:", err);
                 }
             };
 
             fetchBooks();
-        }, 500); // 500ms debounce
+        }, 500);
 
         return () => clearTimeout(delayDebounce);
     }, [searchQuery]);
 
     return (
-        <div style={{ padding: "1rem" }}>
+        <div className="home-container">
             {/* Header */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <h1>Books Store</h1>
+            <header className="home-header">
+                <h1>Books Store</h1>  
+
+                {/* Search Bar */}
                 <div>
+                    <input
+                        type="text"
+                        placeholder="Search books..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="header-search-input"
+                    />
+                </div>
+                <div className="header-buttons">
                     {!token ? (
                         <Link to="/login">
-                            <button>Login</button>
+                            <button className="btn login-btn">Login</button>
                         </Link>
                     ) : (
-                        <button onClick={logout}>Logout</button>
+                        <button className="btn logout-btn" onClick={logout}>Logout</button>
                     )}
                 </div>
-            </div>
+            </header>
 
-            {/* Search Bar */}
-            <div className="search-container">
-            <input
-                type="text"
-                placeholder="Search books..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="search-input"
-            />
-            </div>
             {/* Books List */}
             <div className="books-list">
                 {books.length === 0 ? (
@@ -70,7 +69,7 @@ function Home() {
                     books.map((book) => (
                         <Link
                             key={book.id}
-                            to={`/books/${book.id}`}      // redirect to BookDetails page
+                            to={`/books/${book.id}`}
                             className="book-card-link"
                         >
                             <div className="book-card">
@@ -80,9 +79,6 @@ function Home() {
                     ))
                 )}
             </div>
-
-            {/* Login message */}
-            <p>{token ? "You are logged in." : "Please log in to continue."}</p>
         </div>
     );
 }
