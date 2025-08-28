@@ -12,74 +12,55 @@ function Home() {
     const [genres, setGenres] = useState([]);
     const [selectedGenre, setSelectedGenre] = useState("");
 
+    // Unified fetch function
+    const fetchBooks = async (search = "", genre = "") => {
+        try {
+            const params = {};
+            if (search) params.search = search;
+            if (genre) params.genre = genre;
+
+            const response = await axios.get("/book", { params });
+            setBooks(response.data);
+
+            // Extract genres only once
+            if (!genres.length) {
+                const uniqueGenres = Array.from(
+                    new Set(response.data.map(b => b.genre).filter(Boolean))
+                );
+                setGenres(uniqueGenres);
+            }
+        } catch (err) {
+            console.error("Error fetching books:", err);
+        }
+    };
+
     // Fetch all books initially
     useEffect(() => {
-        const fetchAllBooks = async () => {
-            try {
-                const response = await axios.get("/book");
-                setBooks(response.data);
-
-                // Extract unique genres
-                const uniqueGenres = Array.from(
-                    new Set(response.data.map((b) => b.genre).filter(Boolean))
-                );
-                console.log("Unique genres:", uniqueGenres);
-                setGenres(uniqueGenres);
-            } catch (err) {
-                console.error("Error fetching books:", err);
-            }
-        };
-        fetchAllBooks();
+        fetchBooks();
     }, []);
 
-    // Search books
+    // Fetch books when searchQuery or selectedGenre changes
     useEffect(() => {
-        const delayDebounce = setTimeout(async () => {
-            try {
-                if (!searchQuery && !selectedGenre) return;
-
-                const params = {};
-                if (searchQuery) params.search = searchQuery;
-                if (selectedGenre) params.genre = selectedGenre;
-
-                const response = await axios.get("/book", { params });
-                setBooks(response.data);
-            } catch (err) {
-                console.error("Error fetching books:", err);
-            }
+        const delayDebounce = setTimeout(() => {
+            fetchBooks(searchQuery, selectedGenre);
         }, 300);
+
         return () => clearTimeout(delayDebounce);
     }, [searchQuery, selectedGenre]);
-
-    // Genre filter logic
-    useEffect(() => {
-        const fetchBooksByGenre = async () => {
-            try {
-                const params = selectedGenre ? { genre: selectedGenre } : {};
-                const response = await axios.get("/book", { params });
-                setBooks(response.data);
-            } catch (err) {
-                console.error("Error fetching books by genre:", err);
-            }
-        };
-
-        fetchBooksByGenre();
-    }, [selectedGenre]);
 
     return (
         <div className="home-container">
             <header className="home-header">
                 <h1>Books Store</h1>
 
-                <div>
-                    <input
-                        type="text"
-                        placeholder="Search books..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="header-search-input"
-                    />
-                </div>
+                {/* Search Bar */}
+                <input
+                    type="text"
+                    placeholder="Search books..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="header-search-input"
+                />
 
                 <div className="header-buttons">
                     {user?.isAdmin && <CreateButton />}
@@ -96,11 +77,11 @@ function Home() {
             </header>
 
             {/* Genre Carousel */}
-            {genres.length >= 0 && (
+            {genres.length > 0 && (
                 <div className="genres-carousel">
                     <button
                         className={`genre-btn ${selectedGenre === "" ? "active" : ""}`}
-                        onClick={() => setSelectedGenre("")} // <-- fetch all books
+                        onClick={() => setSelectedGenre("")} // Show all books
                     >
                         All Genres
                     </button>
@@ -131,7 +112,11 @@ function Home() {
                         >
                             <div className="book-card">
                                 <img
-                                    src={book.imageUrl ? book.imageUrl.replace(/^\/?wwwroot/, "") : "/placeholder.png"}
+                                    src={
+                                        book.imageUrl
+                                            ? book.imageUrl.replace(/^\/?wwwroot/, "")
+                                            : "/placeholder.png"
+                                    }
                                     alt={book.name}
                                 />
                                 <h3>{book.name}</h3>

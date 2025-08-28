@@ -1,2 +1,1 @@
-wwwroot\images\dyrachyo-esports.png
-wwwroot\images\IMG_20231231_232858.jpg
+wwwroot\images\IMG_20211015_030803.jpg
