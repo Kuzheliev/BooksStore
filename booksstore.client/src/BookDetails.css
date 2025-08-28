@@ -1,0 +1,76 @@
+.book-details-screen {
+    width: 100vw;
+    height: 100vh;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: flex-start; /* push content to left */
+    align-items: flex-start; /* align to top */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 1rem 2rem 2rem 2rem; /* less top padding for higher position */
+}
+
+.book-details-content {
+    max-width: 900px;
+    width: 100%;
+    text-align: left;
+}
+
+/* Back link */
+.back-link {
+    text-decoration: none;
+    color: #3b82f6;
+    font-weight: 500;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+/* Horizontal layout */
+.book-horizontal {
+    display: flex;
+    gap: 2rem; /* space between image and text */
+    align-items: flex-start;
+}
+
+/* Book image on the left */
+.book-image {
+    max-width: 300px;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+/* Book info text on the right */
+.book-info {
+    color: #000000; /* black text */
+}
+
+.book-title {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.book-info p {
+    margin-bottom: 0.5rem;
+}
+
+/* Admin edit button */
+.edit-button {
+    margin-top: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+    .edit-button:hover {
+        background-color: #2563eb;
+    }
+
+.loading, .error {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #ef4444;
+}

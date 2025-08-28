@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-
+import "./EditBook.css";
 
 function EditBook() {
     const { id } = useParams();
     const navigate = useNavigate();
-
 
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
@@ -61,9 +60,6 @@ function EditBook() {
                 },
             });
 
-            console.log("formData", formData);
-
-
             alert("Book updated successfully!");
             navigate(`/books/${id}`);
         } catch (err) {
@@ -73,75 +69,68 @@ function EditBook() {
     };
 
     return (
-        <div className="p-4 border rounded shadow w-80">
-            <h3 className="text-lg font-bold mb-4">Edit Book</h3>
+        <div className="edit-book-container">
+            <h2 className="edit-book-title">Edit Book</h2>
 
-            <input
-                type="text"
-                placeholder="Name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                className="border p-2 w-full mb-2 rounded"
-            />
-            <input
-                type="text"
-                placeholder="Description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="border p-2 w-full mb-2 rounded"
-            />
-            <input
-                type="text"
-                placeholder="Author"
-                value={author}
-                onChange={(e) => setAuthor(e.target.value)}
-                className="border p-2 w-full mb-2 rounded"
-            />
-            <input
-                type="text"
-                placeholder="Title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className="border p-2 w-full mb-2 rounded"
-            />
-            <input
-                type="number"
-                placeholder="Price"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-                className="border p-2 w-full mb-2 rounded"
-            />
-            <input
-                type="text"
-                placeholder="Genre"
-                value={genre}
-                onChange={(e) => setGenre(e.target.value)}
-                className="border p-2 w-full mb-2 rounded"
-            />
+            <div className="edit-book-form">
+                <label>Name</label>
+                <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                />
 
-            <div className="mb-2">
-                <label className="block mb-1">Image</label>
+                <label>Description</label>
+                <textarea
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                />
+
+                <label>Author</label>
+                <input
+                    type="text"
+                    value={author}
+                    onChange={(e) => setAuthor(e.target.value)}
+                />
+
+                <label>Title</label>
+                <input
+                    type="text"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                />
+
+                <label>Price</label>
+                <input
+                    type="number"
+                    value={price}
+                    onChange={(e) => setPrice(e.target.value)}
+                />
+
+                <label>Genre</label>
+                <input
+                    type="text"
+                    value={genre}
+                    onChange={(e) => setGenre(e.target.value)}
+                />
+
+                <label>Image</label>
                 <input
                     type="file"
                     onChange={(e) => setImageFile(e.target.files[0])}
-                    className="border p-2 w-full rounded"
                 />
                 {imageUrl && !imageFile && (
                     <img
                         src={imageUrl.replace(/^\/?wwwroot/, "")}
                         alt="Book"
-                        style={{ maxWidth: "100px", marginTop: "5px" }}
+                        className="preview-image"
                     />
                 )}
-            </div>
-            
-            <button
-                onClick={handleUpdate}
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full"
-            >
-                Edit
+
+                <button onClick={handleUpdate} className="update-button">
+                    Update Book
                 </button>
-            
+            </div>
         </div>
     );
 }

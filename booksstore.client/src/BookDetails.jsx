@@ -2,6 +2,7 @@
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "./AuthContext";
+import "./BookDetails.css";
 
 function BookDetails() {
     const { id } = useParams();
@@ -9,11 +10,11 @@ function BookDetails() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { user } = useAuth();
+
     useEffect(() => {
         const fetchBook = async () => {
             try {
                 const response = await axios.get(`/book/id/${id}`);
-                console.log("response ", response);
                 setBook(response.data);
             } catch (err) {
                 setError("Book not found or error fetching data.");
@@ -26,37 +27,37 @@ function BookDetails() {
         fetchBook();
     }, [id]);
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>{error}</p>;
-    if (!book) return <p>Book not found.</p>;
+    if (loading) return <p className="loading">Loading...</p>;
+    if (error) return <p className="error">{error}</p>;
+    if (!book) return <p className="error">Book not found.</p>;
 
     return (
-        <div style={{ padding: "1rem" }}>
-            <Link to="/"> Back to Home</Link>
+        <div className="book-details-screen">
+            <div className="book-details-content">
+                <Link to="/" className="back-link">← Back to Home</Link>
 
-            <h1>{book.name || "Unnamed Book"}</h1>
+                <div className="book-horizontal">
+                    <img
+                        src={book.imageUrl ? book.imageUrl.replace(/^\/?wwwroot/, '') : '/placeholder.png'}
+                        alt={book.name}
+                        className="book-image"
+                    />
 
-            <img
-                src={
-                    book.imageUrl
-                        ? book.imageUrl.replace(/^\/?wwwroot/, '')  // remove leading /wwwroot if present
-                        : '/placeholder.png'
-                }
-                alt={book.name}
-                style={{ maxWidth: "300px", margin: "1rem 0" }}
-            />
+                    <div className="book-info">
+                        <h1 className="book-title">{book.name || "Unnamed Book"}</h1>
+                        <p><strong>Author:</strong> {book.author || "Unknown"}</p>
+                        <p><strong>Genre:</strong> {book.genre || "N/A"}</p>
+                        <p><strong>Price:</strong> ${book.price?.toFixed(2) || "0.00"}</p>
+                        <p><strong>Description:</strong> {book.description || "No description available."}</p>
 
-            <p><strong>Author:</strong> {book.author || "Unknown"}</p>
-            <p><strong>Genre:</strong> {book.genre || "N/A"}</p>
-            <p><strong>Price:</strong> ${book.price?.toFixed(2) || "0.00"}</p>
-            <p><strong>Description:</strong> {book.description || "No description available."}</p>
-            {user?.isAdmin && (
-            <Link to={`/books/edit/${book.id}`}>
-                <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-4">
-                    Edit
-                </button>
-                </Link>
-            )}
+                        {user?.isAdmin && (
+                            <Link to={`/books/edit/${book.id}`}>
+                                <button className="edit-button">Edit</button>
+                            </Link>
+                        )}
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

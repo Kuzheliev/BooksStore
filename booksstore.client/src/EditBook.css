@@ -1,0 +1,78 @@
+/* Container */
+.edit-book-container {
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: #f7f9fc;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Title */
+.edit-book-title {
+    text-align: center;
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+/* Form */
+.edit-book-form {
+    display: flex;
+    flex-direction: column;
+}
+
+    .edit-book-form label {
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+        margin-top: 0.75rem;
+        color: #555;
+    }
+
+    .edit-book-form input,
+    .edit-book-form textarea {
+        padding: 0.6rem 0.8rem;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+    }
+
+    .edit-book-form textarea {
+        min-height: 80px;
+        resize: vertical;
+    }
+
+/* Preview image */
+.preview-image {
+    max-width: 120px;
+    max-height: 120px;
+    margin-top: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* Update button */
+.update-button {
+    margin-top: 1.5rem;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 8px;
+    background: #3b82f6;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+    .update-button:hover {
+        background: #2563eb;
+    }
+
+/* Responsive */
+@media (max-width: 600px) {
+    .edit-book-container {
+        padding: 1rem;
+    }
+}

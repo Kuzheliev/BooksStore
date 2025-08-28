@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import "./CreateBook.css";
 
 function CreateBook() {
     const [name, setName] = useState("");
@@ -20,7 +21,7 @@ function CreateBook() {
         formData.append("Title", title);
         formData.append("Price", parseFloat(price));
         formData.append("Genre", genre);
-        if (image) formData.append("Image", image); 
+        if (image) formData.append("Image", image);
 
         try {
             const res = await axios.post("/Book", formData, {
@@ -40,25 +41,50 @@ function CreateBook() {
     };
 
     return (
-        <div className="p-4 border rounded shadow w-80">
-            <h3 className="text-lg font-bold mb-4">Create New Book</h3>
-            <input type="text" placeholder="Name" value={name} onChange={e => setName(e.target.value)} className="border p-2 w-full mb-2 rounded" />
-            <input type="text" placeholder="Description" value={description} onChange={e => setDescription(e.target.value)} className="border p-2 w-full mb-2 rounded" />
-            <input type="text" placeholder="Author" value={author} onChange={e => setAuthor(e.target.value)} className="border p-2 w-full mb-2 rounded" />
-            <input type="text" placeholder="Title" value={title} onChange={e => setTitle(e.target.value)} className="border p-2 w-full mb-2 rounded" />
-            <input type="number" placeholder="Price" value={price} onChange={e => setPrice(e.target.value)} className="border p-2 w-full mb-2 rounded" />
-            <input type="text" placeholder="Genre" value={genre} onChange={e => setGenre(e.target.value)} className="border p-2 w-full mb-2 rounded" />
+        <div className="create-book-container">
+            <h2 className="create-book-title">Create New Book</h2>
 
-            {/* File picker for image */}
-            <input type="file" accept="image/*" onChange={e => setImageFile(e.target.files[0])} className="border p-2 w-full mb-2 rounded" />
+            <div className="create-book-form">
+                <label>Name</label>
+                <input type="text" value={name} onChange={e => setName(e.target.value)} />
 
-            <button onClick={handleCreate} disabled={!name || !price} className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 disabled:opacity-50 w-full mb-2">
-                Create
-            </button>
+                <label>Description</label>
+                <textarea value={description} onChange={e => setDescription(e.target.value)} />
 
-            <Link to="/">
-                <button className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 w-full">Back to Home</button>
-            </Link>
+                <label>Author</label>
+                <input type="text" value={author} onChange={e => setAuthor(e.target.value)} />
+
+                <label>Title</label>
+                <input type="text" value={title} onChange={e => setTitle(e.target.value)} />
+
+                <label>Price</label>
+                <input type="number" value={price} onChange={e => setPrice(e.target.value)} />
+
+                <label>Genre</label>
+                <input type="text" value={genre} onChange={e => setGenre(e.target.value)} />
+
+                <label>Image</label>
+                <input type="file" accept="image/*" onChange={e => setImageFile(e.target.files[0])} />
+                {image && (
+                    <img
+                        src={URL.createObjectURL(image)}
+                        alt="Preview"
+                        className="preview-image"
+                    />
+                )}
+
+                <button
+                    onClick={handleCreate}
+                    disabled={!name || !price}
+                    className="create-button"
+                >
+                    Create
+                </button>
+
+                <Link to="/">
+                    <button className="back-button">Back to Home</button>
+                </Link>
+            </div>
         </div>
     );
 }

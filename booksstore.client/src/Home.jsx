@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import axios from "axios";
 import "./Home.css";
-import { useNavigate } from "react-router-dom";
 import CreateButton from "./CreateButton";
 
 function Home() {
