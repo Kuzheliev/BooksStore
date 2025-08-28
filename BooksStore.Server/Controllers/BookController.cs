@@ -27,7 +27,7 @@ using static System.Net.Mime.MediaTypeNames;
             //}
 
             [HttpGet]
-            public async Task<IActionResult> GetBooks([FromQuery] string? search)
+            public async Task<IActionResult> GetBooks([FromQuery] string? search, [FromQuery] string? genre)
             {
                 var booksQuery = _booksRepository.GetBooks();
 
@@ -37,9 +37,16 @@ using static System.Net.Mime.MediaTypeNames;
                                                        b.Name.ToLower().Contains(search.ToLower()));
                 }
 
-                var books = await booksQuery.ToListAsync(); 
+                if (!string.IsNullOrWhiteSpace(genre))
+                {
+                    booksQuery = booksQuery.Where(b => b.Genre != null &&
+                                                       b.Genre.ToLower() == genre.ToLower());
+                }
+
+            var books = await booksQuery.ToListAsync(); 
                 return Ok(books);
             }
+
             [HttpGet("id/{id}")]
             public async Task<IActionResult> GetBookById(int id)
             {
