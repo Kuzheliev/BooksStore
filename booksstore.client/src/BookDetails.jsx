@@ -12,6 +12,7 @@ function BookDetails() {
         const fetchBook = async () => {
             try {
                 const response = await axios.get(`/book/id/${id}`);
+                console.log("response ", response);
                 setBook(response.data);
             } catch (err) {
                 setError("Book not found or error fetching data.");
@@ -31,7 +32,19 @@ function BookDetails() {
     return (
         <div style={{ padding: "1rem" }}>
             <Link to="/"> Back to Home</Link>
+
             <h1>{book.name || "Unnamed Book"}</h1>
+
+            <img
+                src={
+                    book.imageUrl
+                        ? book.imageUrl.replace(/^\/?wwwroot/, '')  // remove leading /wwwroot if present
+                        : '/placeholder.png'
+                }
+                alt={book.name}
+                style={{ maxWidth: "300px", margin: "1rem 0" }}
+            />
+
             <p><strong>Author:</strong> {book.author || "Unknown"}</p>
             <p><strong>Genre:</strong> {book.genre || "N/A"}</p>
             <p><strong>Price:</strong> ${book.price?.toFixed(2) || "0.00"}</p>

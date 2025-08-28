@@ -64,12 +64,31 @@
 
 
             [HttpPost]
-            public async Task<IActionResult> CreateBook([FromBody] Book newBook)
+            [Consumes("multipart/form-data")]
+            public async Task<IActionResult> CreateBook([FromForm] Book model, IFormFile Image)
             {
-                var createdBook = await _booksRepository.CreateAsync(newBook);
+                if (Image != null)
+                {
+                    var fileName = Path.GetFileName(Image.FileName);
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
+
+                    var imagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+                    if (!Directory.Exists(imagesFolder))
+                    {
+                        Directory.CreateDirectory(imagesFolder);
+                    }  
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                            await Image.CopyToAsync(stream);
+                    }
+
+                        model.ImageUrl = $"/images/{fileName}";
+                }
+
+                var createdBook = await _booksRepository.CreateAsync(model);
                 return Ok(createdBook);
             }
-
         }
 
     }

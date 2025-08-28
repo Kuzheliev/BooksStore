@@ -1,4 +1,6 @@
-﻿namespace BooksStore.Server.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BooksStore.Server.Models
 {
     public class Book
     {
@@ -16,6 +18,9 @@
 
         public string? Genre { get; set; }
 
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
+
+        [NotMapped]
+        public IFormFile? Image { get; set; }
     }
 }

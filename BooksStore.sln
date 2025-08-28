@@ -7,12 +7,6 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "booksstore.client", "bookss
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BooksStore.Server", "BooksStore.Server\BooksStore.Server.csproj", "{30515228-988B-4C01-95C8-9E5EFD394C90}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "wwwroot", "wwwroot", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "images", "images", "{06B84F1E-6F7D-4B84-A7D8-1E6B87BB1DD0}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "books", "books", "{5D865095-1C81-4471-83B6-BF9CD52C8C8B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,10 +26,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{06B84F1E-6F7D-4B84-A7D8-1E6B87BB1DD0} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
-		{5D865095-1C81-4471-83B6-BF9CD52C8C8B} = {06B84F1E-6F7D-4B84-A7D8-1E6B87BB1DD0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1FA51E6D-DFD9-4951-B3FE-7767717817DF}
