@@ -62,6 +62,11 @@ export default defineConfig({
                 changeOrigin: true,
                 secure: false
             },
+            '^/Book': {
+                target,
+                changeOrigin: true,
+                secure: false
+            }
         },
         port: parseInt(env.DEV_SERVER_PORT || '59211'),
         https: {

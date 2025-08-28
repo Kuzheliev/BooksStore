@@ -6,7 +6,7 @@ import "./App.css";
 import { useAuth } from "./AuthContext";
 import Home from "./Home";
 import BookDetails from "./BookDetails";
-
+import CreateBook from "./CreateBook";
 
 
 function LoginPage() {
@@ -37,6 +37,7 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/books/:id" element={<BookDetails />} />
+                    <Route path="/books/new" element={<CreateBook />} />
                     <Route path="*" element={<p>Page not found!</p>} /> 
                 </Routes>
             </Router>

@@ -1,5 +1,6 @@
 ﻿using BooksStore.Server.Migrations;
 using BooksStore.Server.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BooksStore.Server.DAL
 {
@@ -44,6 +45,16 @@ namespace BooksStore.Server.DAL
 
             await _context.SaveChangesAsync();
             return existing;
+        }
+
+        [HttpPost]
+        public async Task<Book> CreateAsync(Book book)
+        {
+            book.Id = 0;
+
+            _context.Books.Add(book);
+            await _context.SaveChangesAsync();
+            return book;
         }
     }
 }
