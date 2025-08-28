@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import axios from "axios";
 import "./Home.css";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
-    const { token, logout } = useAuth();
+    const { token, logout, user } = useAuth();
+
     const [searchQuery, setSearchQuery] = useState("");
     const [books, setBooks] = useState([]);
+    const navigate = useNavigate();
 
     // Fetch books from backend with debounce
     useEffect(() => {
@@ -51,12 +54,20 @@ function Home() {
                     />
                 </div>
                 <div className="header-buttons">
+                    {user?.isAdmin && (
+                        <Link to="/books/new">
+                            <button className="btn admin-btn">➕ Add New Book</button>
+                        </Link>
+                    )}
+
                     {!token ? (
                         <Link to="/login">
                             <button className="btn login-btn">Login</button>
                         </Link>
                     ) : (
-                        <button className="btn logout-btn" onClick={logout}>Logout</button>
+                        <button className="btn logout-btn" onClick={logout}>
+                            Logout
+                        </button>
                     )}
                 </div>
             </header>

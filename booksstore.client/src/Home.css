@@ -34,17 +34,17 @@
     transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.header-search-input:focus {
+    .header-search-input:focus {
         border-color: #556cd6;
         box-shadow: 0 0 5px rgba(85,108,214,0.4);
- }
+    }
 /* Buttons */
 .btn {
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
+    padding: 0.20rem 0.4rem; /* smaller than before */
+    border-radius: 5px;
     border: none;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.85rem; /* slightly smaller text */
     transition: background-color 0.2s, transform 0.1s;
 }
 
@@ -52,19 +52,18 @@
     background-color: #667eea;
     color: #fff;
 }
-
-    .login-btn:hover {
-        background-color: #556cd6;
-    }
+.login-btn:hover {
+    background-color: #556cd6;
+}
 
 .logout-btn {
     background-color: #dc2626;
     color: #fff;
 }
 
-    .logout-btn:hover {
-        background-color: #b91c1c;
-    }
+.logout-btn:hover {
+    background-color: #b91c1c;
+}
 
 /* Search container */
 .search-container {
@@ -162,4 +161,18 @@
     .header-search-input {
         width: 1000px; /* длиннее на больших экранах */
     }
+}
+
+.admin-btn {
+    background-color: #28a745;
+    color: white;
+    margin-left: 0.5rem; /* smaller spacing */
+    font-size: 0.85rem; /* same as .btn */
+    padding: 0.25rem 0.5rem;
+    border-radius: 5px;
+}
+
+.admin-btn:hover {
+     background-color: #218838;
+
 }

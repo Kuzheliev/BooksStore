@@ -8,24 +8,31 @@ export default function AuthProvider({ children }) {
     const [token, setToken] = useState(localStorage.getItem("token"));
     const [user, setUser] = useState(() => {
         try {
-            return JSON.parse(localStorage.getItem("user")) || {};
+            return JSON.parse(localStorage.getItem("user")) || null;
         } catch {
-            return {};
+            return null;
         }
     });
 
     const login = (tokenValue, userData) => {
+        if (!userData) return;
+
+        const mappedUser = {
+            ...userData,
+            isAdmin: userData.IsAdmin || userData.isAdmin || false
+        };
+
         localStorage.setItem("token", tokenValue);
-        localStorage.setItem("user", JSON.stringify(userData));
+        localStorage.setItem("user", JSON.stringify(mappedUser));
         setToken(tokenValue);
-        setUser(userData);
+        setUser(mappedUser);
     };
 
     const logout = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         setToken(null);
-        setUser({});
+        setUser(null);
     };
 
     return (

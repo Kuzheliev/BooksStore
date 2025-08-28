@@ -39,7 +39,7 @@ namespace BooksStore.Server.Controllers
                 return Unauthorized();
 
             var token = GenerateJwtToken(user);
-            return Ok(new { token, user = new { user.Id, user.Email } });
+            return Ok(new { token, user = new { user.Id, user.Email, user.IsAdmin } });
         }
 
         private string GenerateJwtToken(Models.Users user)

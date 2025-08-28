@@ -13,7 +13,7 @@ function LoginForm({ onLogin }) {
                 localStorage.setItem("token", token);
                 localStorage.setItem("user", JSON.stringify(user));
 
-                onLogin(token);
+                onLogin(token, user);
         } catch (err) {
             console.error(err);
         }

@@ -1,5 +1,6 @@
 using BooksStore.Server.DAL;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,12 @@ builder.Services.AddCors(options =>
                         .AllowAnyHeader()
                         .AllowAnyMethod());
 });
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    });
 
 var app = builder.Build();
 
