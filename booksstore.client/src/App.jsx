@@ -7,6 +7,7 @@ import { useAuth } from "./AuthContext";
 import Home from "./Home";
 import BookDetails from "./BookDetails";
 import CreateBook from "./CreateBook";
+import EditBook from "./EditBook";
 
 
 function LoginPage() {
@@ -38,6 +39,7 @@ function App() {
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/books/:id" element={<BookDetails />} />
                     <Route path="/books/new" element={<CreateBook />} />
+                    <Route path="/books/edit/:id" element={<EditBook />} />
                     <Route path="*" element={<p>Page not found!</p>} /> 
                 </Routes>
             </Router>

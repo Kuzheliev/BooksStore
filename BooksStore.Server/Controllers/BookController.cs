@@ -3,6 +3,7 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
+using static System.Net.Mime.MediaTypeNames;
 
     namespace BooksStore.Server.Controllers
     {
@@ -48,47 +49,71 @@
             }
 
 
-            [HttpPut("{id}")]
-            public async Task<IActionResult> UpdateBook(int id, Book book)
+        [HttpPut("{id}")]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> UpdateBook(int id, [FromForm] Book model, IFormFile? Image)
+        {
+            if (id != model.Id)
+                return BadRequest();
+
+            if (Image != null)
             {
-                if (id != book.Id)
-                     return BadRequest();
+                var fileName = Path.GetFileName(Image.FileName);
+                var imagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
 
-                 var updated = await _booksRepository.UpdateAsync(book);
-
-                if (updated == null)
-                     return NotFound();
-
-                return Ok(updated);
-            }
-
-
-            [HttpPost]
-            [Consumes("multipart/form-data")]
-            public async Task<IActionResult> CreateBook([FromForm] Book model, IFormFile Image)
-            {
-                if (Image != null)
+                if (!Directory.Exists(imagesFolder))
                 {
-                    var fileName = Path.GetFileName(Image.FileName);
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", fileName);
-
-                    var imagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
-                    if (!Directory.Exists(imagesFolder))
-                    {
-                        Directory.CreateDirectory(imagesFolder);
-                    }  
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                            await Image.CopyToAsync(stream);
-                    }
-
-                        model.ImageUrl = $"/images/{fileName}";
+                    Directory.CreateDirectory(imagesFolder);
                 }
 
-                var createdBook = await _booksRepository.CreateAsync(model);
-                return Ok(createdBook);
+                var filePath = Path.Combine(imagesFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await Image.CopyToAsync(stream);
+                }
+
+                model.ImageUrl = $"/images/{fileName}";
             }
+
+            var updated = await _booksRepository.UpdateAsync(model);
+
+            if (updated == null)
+                return NotFound();
+
+            return Ok(updated);
+        }
+
+
+
+        [HttpPost]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> CreateBook([FromForm] Book model)
+        {
+            if (model.Image != null)
+            {
+                var fileName = Path.GetFileName(model.Image.FileName);
+                var imagesFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+
+                if (!Directory.Exists(imagesFolder))
+                {
+                    Directory.CreateDirectory(imagesFolder);
+                }
+
+                var filePath = Path.Combine(imagesFolder, fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await model.Image.CopyToAsync(stream);
+                }
+
+                model.ImageUrl = $"/images/{fileName}";
+            }
+
+            var createdBook = await _booksRepository.CreateAsync(model);
+            return Ok(createdBook);
         }
 
     }
+
+}

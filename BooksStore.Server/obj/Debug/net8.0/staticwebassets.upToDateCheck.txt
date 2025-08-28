@@ -1,1 +1,2 @@
 wwwroot\images\dyrachyo-esports.png
+wwwroot\images\IMG_20231231_232858.jpg

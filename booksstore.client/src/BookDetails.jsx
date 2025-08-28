@@ -1,13 +1,14 @@
 ﻿import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "./AuthContext";
 
 function BookDetails() {
     const { id } = useParams();
     const [book, setBook] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+    const { user } = useAuth();
     useEffect(() => {
         const fetchBook = async () => {
             try {
@@ -49,6 +50,13 @@ function BookDetails() {
             <p><strong>Genre:</strong> {book.genre || "N/A"}</p>
             <p><strong>Price:</strong> ${book.price?.toFixed(2) || "0.00"}</p>
             <p><strong>Description:</strong> {book.description || "No description available."}</p>
+            {user?.isAdmin && (
+            <Link to={`/books/edit/${book.id}`}>
+                <button className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-4">
+                    Edit
+                </button>
+                </Link>
+            )}
         </div>
     );
 }

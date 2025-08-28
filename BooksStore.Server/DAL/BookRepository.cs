@@ -36,12 +36,15 @@ namespace BooksStore.Server.DAL
             var existing = await _context.Books.FindAsync(book.Id);
             if (existing == null) return null;
 
-            // Update properties
             existing.Name = book.Name;
-            existing.Author = book.Author;
-            existing.Genre = book.Genre;
-            existing.Price = book.Price;
             existing.Description = book.Description;
+            existing.Author = book.Author;
+            existing.Title = book.Title;
+            existing.Price = book.Price;
+            existing.Genre = book.Genre;
+
+            if (!string.IsNullOrEmpty(book.ImageUrl))
+                existing.ImageUrl = book.ImageUrl;
 
             await _context.SaveChangesAsync();
             return existing;
