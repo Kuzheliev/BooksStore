@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "./AuthContext";
 import "./BookDetails.css";
+import { useCart } from "./CartContext";
 
 function BookDetails() {
     const { id } = useParams();
@@ -11,6 +12,7 @@ function BookDetails() {
     const [error, setError] = useState(null);
     const { user } = useAuth();
     const [added, setAdded] = useState(false); // feedback state
+    const { addToCart } = useCart(); // use CartContext
 
     useEffect(() => {
         const fetchBook = async () => {
@@ -28,12 +30,14 @@ function BookDetails() {
     }, [id]);
 
     const handleAddToCart = () => {
-        // Example: store in localStorage
-        const cart = JSON.parse(localStorage.getItem("cart")) || [];
-        cart.push(book);
-        localStorage.setItem("cart", JSON.stringify(cart));
+        if (!book) return;
+
+        // Add to cart via CartContext
+        addToCart(book);
         setAdded(true);
-        setTimeout(() => setAdded(false), 1500); // temporary feedback
+
+        // Temporary feedback
+        setTimeout(() => setAdded(false), 1500);
     };
 
     if (loading) return <p className="loading">Loading...</p>;
@@ -57,7 +61,7 @@ function BookDetails() {
                         <p><strong>Author:</strong> {book.author || "Unknown"}</p>
                         <p><strong>Genre:</strong> {book.genre || "N/A"}</p>
                         <p>
-                            <strong>Price:</strong>
+                            <strong>Price:</strong>{" "}
                             {book.price
                                 ? new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(book.price)
                                 : "$0.00"}

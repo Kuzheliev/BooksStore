@@ -1,14 +1,14 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+﻿import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import LoginForm from "./Login";
-import AuthProvider from "./AuthContext";
+import AuthProvider, { useAuth } from "./AuthContext";
+import CartProvider from "./CartContext"; // ✅ import CartProvider
 import "./App.css";
-import { useAuth } from "./AuthContext";
 import Home from "./Home";
 import BookDetails from "./BookDetails";
 import CreateBook from "./CreateBook";
+import Cart from "./Cart";
 import EditBook from "./EditBook";
-
 
 function LoginPage() {
     const { login } = useAuth();
@@ -33,16 +33,23 @@ function LoginPage() {
 function App() {
     return (
         <AuthProvider>
-            <Router>
-                <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/books/:id" element={<BookDetails />} />
-                    <Route path="/books/new" element={<CreateBook />} />
-                    <Route path="/books/edit/:id" element={<EditBook />} />
-                    <Route path="*" element={<p>Page not found!</p>} /> 
-                </Routes>
-            </Router>
+            <CartProvider>
+                <Router>
+                    <nav className="main-nav">
+                        <Link to="/">Home</Link>
+                        <Link to="/cart">Cart</Link>
+                    </nav>
+                    <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/books/:id" element={<BookDetails />} />
+                        <Route path="/books/new" element={<CreateBook />} />
+                        <Route path="/books/edit/:id" element={<EditBook />} />
+                        <Route path="/cart" element={<Cart />} />
+                        <Route path="*" element={<p>Page not found!</p>} />
+                    </Routes>
+                </Router>
+            </CartProvider>
         </AuthProvider>
     );
 }
