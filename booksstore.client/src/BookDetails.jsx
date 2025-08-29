@@ -10,6 +10,7 @@ function BookDetails() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const { user } = useAuth();
+    const [added, setAdded] = useState(false); // feedback state
 
     useEffect(() => {
         const fetchBook = async () => {
@@ -23,9 +24,17 @@ function BookDetails() {
                 setLoading(false);
             }
         };
-
         fetchBook();
     }, [id]);
+
+    const handleAddToCart = () => {
+        // Example: store in localStorage
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        cart.push(book);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        setAdded(true);
+        setTimeout(() => setAdded(false), 1500); // temporary feedback
+    };
 
     if (loading) return <p className="loading">Loading...</p>;
     if (error) return <p className="error">{error}</p>;
@@ -47,14 +56,25 @@ function BookDetails() {
                         <h1 className="book-title">{book.name || "Unnamed Book"}</h1>
                         <p><strong>Author:</strong> {book.author || "Unknown"}</p>
                         <p><strong>Genre:</strong> {book.genre || "N/A"}</p>
-                        <p><strong>Price:</strong> ${book.price?.toFixed(2) || "0.00"}</p>
+                        <p>
+                            <strong>Price:</strong>
+                            {book.price
+                                ? new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(book.price)
+                                : "$0.00"}
+                        </p>
                         <p><strong>Description:</strong> {book.description || "No description available."}</p>
 
-                        {user?.isAdmin && (
-                            <Link to={`/books/edit/${book.id}`}>
-                                <button className="edit-button">Edit</button>
-                            </Link>
-                        )}
+                        <div className="buttons-row">
+                            <button className="add-cart-button" onClick={handleAddToCart}>
+                                {added ? "Added!" : "Add to Cart"}
+                            </button>
+
+                            {user?.isAdmin && (
+                                <Link to={`/books/edit/${book.id}`}>
+                                    <button className="edit-button">Edit</button>
+                                </Link>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>

@@ -12,7 +12,7 @@ function Home() {
     const [genres, setGenres] = useState([]);
     const [selectedGenre, setSelectedGenre] = useState("");
 
-    // Unified fetch function
+    // Fetch books (with optional filters)
     const fetchBooks = async (search = "", genre = "") => {
         try {
             const params = {};
@@ -22,24 +22,22 @@ function Home() {
             const response = await axios.get("/book", { params });
             setBooks(response.data);
 
-            // Extract genres only once
-            if (!genres.length) {
-                const uniqueGenres = Array.from(
-                    new Set(response.data.map(b => b.genre).filter(Boolean))
-                );
-                setGenres(uniqueGenres);
-            }
+            // Always refresh genres
+            const uniqueGenres = Array.from(
+                new Set(response.data.map(b => b.genre).filter(Boolean))
+            );
+            setGenres(uniqueGenres);
         } catch (err) {
             console.error("Error fetching books:", err);
         }
     };
 
-    // Fetch all books initially
+    // ✅ Load ALL books on first render
     useEffect(() => {
         fetchBooks();
     }, []);
 
-    // Fetch books when searchQuery or selectedGenre changes
+    // ✅ Re-fetch when search or genre changes
     useEffect(() => {
         const delayDebounce = setTimeout(() => {
             fetchBooks(searchQuery, selectedGenre);
@@ -81,7 +79,7 @@ function Home() {
                 <div className="genres-carousel">
                     <button
                         className={`genre-btn ${selectedGenre === "" ? "active" : ""}`}
-                        onClick={() => setSelectedGenre("")} // Show all books
+                        onClick={() => setSelectedGenre("")} // resets to show all
                     >
                         All Genres
                     </button>

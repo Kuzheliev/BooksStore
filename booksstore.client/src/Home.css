@@ -119,30 +119,40 @@
 /* Genres carousel */
 .genres-carousel {
     display: flex;
-    gap: 8px;
+    gap: 10px;
     overflow-x: auto;
-    padding: 10px 0;
-    margin: 10px 0;
+    padding: 12px 0;
+    margin: 16px 0;
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db transparent;
 }
 
+/* Base button */
 .genre-btn {
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    background-color: #f0f0f0;
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 2px solid transparent;
+    background-color: #f3f4f6; /* light gray */
+    color: #374151; /* dark gray text */
+    font-weight: 500;
     cursor: pointer;
+    transition: all 0.2s ease-in-out;
     white-space: nowrap;
 }
 
-.genre-btn.active {
-    background-color: #007bff;
-    color: white;
-    border-color: #007bff;
-}
-.genre-btn:hover {
-    background-color: #3b82f6;
-    color: white;
-}
+    /* Hover effect */
+    .genre-btn:hover {
+        background-color: #e5e7eb;
+        color: #111827;
+    }
+
+    /* Active (selected genre) */
+    .genre-btn.active {
+        background-color: #3b82f6; /* blue */
+        color: white;
+        border-color: #2563eb;
+        font-weight: 600;
+    }
 
 
 .book-card img {
