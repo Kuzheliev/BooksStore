@@ -6,14 +6,14 @@ import { useCart } from "./CartContext";
 function Cart() {
     const { cart, removeFromCart, updateQuantity, getTotal } = useCart();
 
-    if (cart.length === 0)
+    if(cart.length === 0) {
         return (
             <div className="cart-container">
                 <h2>Your Cart is Empty</h2>
                 <Link to="/">Go Back to Home</Link>
             </div>
         );
-
+    }
     return (
         <div className="cart-container">
             <h2>Your Cart</h2>
@@ -65,6 +65,9 @@ function Cart() {
             <Link to="/checkout">
                 <button className="checkout-button">Proceed to Checkout</button>
             </Link>
+            <div className="cart-container">
+                <Link to="/">Go Back to Home</Link>
+            </div>
         </div>
     );
 }

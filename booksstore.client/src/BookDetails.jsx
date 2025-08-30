@@ -37,7 +37,7 @@ function BookDetails() {
         setAdded(true);
 
         // Temporary feedback
-        setTimeout(() => setAdded(false), 1500);
+        setTimeout(() => setAdded(false), 5000);
     };
 
     if (loading) return <p className="loading">Loading...</p>;

@@ -49,7 +49,9 @@ function Home() {
     return (
         <div className="home-container">
             <header className="home-header">
-                <h1>Books Store</h1>
+                <Link to="/" className="home-title-link">
+                    <h1>Books Store</h1>
+                </Link>
 
                 {/* Search Bar */}
                 <input
@@ -62,6 +64,12 @@ function Home() {
 
                 <div className="header-buttons">
                     {user?.isAdmin && <CreateButton />}
+
+                    {/* 🛒 Cart Button */}
+                    <Link to="/cart">
+                        <button className="btn cart-btn">Cart</button>
+                    </Link>
+
                     {!token ? (
                         <Link to="/login">
                             <button className="btn login-btn">Login</button>
@@ -73,6 +81,7 @@ function Home() {
                     )}
                 </div>
             </header>
+
 
             {/* Genre Carousel */}
             {genres.length > 0 && (
@@ -125,6 +134,10 @@ function Home() {
                     ))
                 )}
             </div>
+
+            <nav className="main-nav">
+                <Link to="/">Home</Link>
+            </nav>
         </div>
     );
 }

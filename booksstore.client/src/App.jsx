@@ -35,10 +35,6 @@ function App() {
         <AuthProvider>
             <CartProvider>
                 <Router>
-                    <nav className="main-nav">
-                        <Link to="/">Home</Link>
-                        <Link to="/cart">Cart</Link>
-                    </nav>
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/login" element={<LoginPage />} />
