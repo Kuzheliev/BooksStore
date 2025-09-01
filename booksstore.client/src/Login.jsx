@@ -1,9 +1,11 @@
 import { useState } from "react";
 import axios from "axios";
-
+import "./Login.css";
+import { useNavigate } from "react-router-dom";
 function LoginForm({ onLogin }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const handleLogin = async () => {
         try {
@@ -17,6 +19,10 @@ function LoginForm({ onLogin }) {
         } catch (err) {
             console.error(err);
         }
+    };
+
+    const handleNavigateRegister = () => {
+        navigate("/register"); // navigate to create account page
     };
 
     return (
@@ -37,10 +43,14 @@ function LoginForm({ onLogin }) {
             />
             <button
                 onClick={handleLogin}
-                className="bg-green-500 text-white px-4 py-2 rounded w-full"
+                className="btn login-btn"
             >
                 Login
             </button>
+            <button className="btn register-btnl" onClick={handleNavigateRegister}>
+                Create Account
+            </button>
+
         </div>
     );
 }

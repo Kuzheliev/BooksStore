@@ -2,6 +2,8 @@
 using BooksStore.Server.Migrations;
 using BooksStore.Server.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -27,20 +29,68 @@ namespace BooksStore.Server.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginRequest request)
+        public async Task<IActionResult> Login(Models.LoginRequest request)
         {
             var user = await _context.Users
                 .FirstOrDefaultAsync(u => u.Email == request.Email);
 
             if (user == null) return Unauthorized();
 
-            // Validate password (plain for simplicity; in production use hashing!)
-            if (user.Password != request.Password)
+            var hasher = new PasswordHasher<Models.Users>();
+            var result = hasher.VerifyHashedPassword(user, user.Password, request.Password);
+
+            if (result == PasswordVerificationResult.Failed)
                 return Unauthorized();
 
             var token = GenerateJwtToken(user);
-            return Ok(new { token, user = new { user.Id, user.Email, user.IsAdmin } });
+            return Ok(new { token, user = new { user.Id, user.Email, user.IsAdmin, user.Name } });
         }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(Models.Users request)
+        {
+            // Check if email already exists
+            if (await _context.Users.AnyAsync(u => u.Email == request.Email))
+            {
+                return BadRequest(new { message = "Email is already registered." });
+            }
+
+            var hasher = new PasswordHasher<Models.Users>();
+
+            var user = new Models.Users
+            {
+                Name = request.Name,
+                Email = request.Email,
+                Phone= request.Phone,
+                City = request.City,
+                Address = request.Address,
+                Country = request.Country,
+                IsAdmin = false // default
+            };
+
+            // Hash the password
+            user.Password = hasher.HashPassword(user, request.Password);
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+
+            var token = GenerateJwtToken(user);
+
+            return Ok(new
+            {
+                token,
+                user = new
+                {
+                    user.Id,
+                    user.Email,
+                    user.IsAdmin,
+                    user.Name,
+                    user.City,
+                    user.Country
+                }
+            });
+        }
+
 
         private string GenerateJwtToken(Models.Users user)
         {

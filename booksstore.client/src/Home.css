@@ -10,8 +10,9 @@
 .home-header {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: center; /* vertically center search + buttons */
     justify-content: space-between;
+    gap: 1rem;
     margin-bottom: 2rem;
 }
 
@@ -23,10 +24,12 @@
 
 /* Search input */
 .header-search-input {
-    padding: 0.5rem 1rem;
+    padding: 0 1rem;
     border: 2px solid #d1d5db;
     border-radius: 8px;
     font-size: 1rem;
+    height: 40px; /* same height as buttons */
+    box-sizing: border-box;
     outline: none;
     transition: border-color 0.2s;
 }
@@ -39,19 +42,31 @@
 .header-buttons {
     display: flex;
     gap: 1rem;
-    margin-top: 0.5rem;
+    align-items: center; /* ensures all buttons same height */
 }
 
-    /* Buttons */
-    .btn, .header-buttons button {
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
-        font-weight: 600;
-        cursor: pointer;
-        border: none;
-        transition: background-color 0.2s;
-    }
+/* Base button style */
+.btn,
+.header-buttons button,
+.genre-btn {
+    padding: 0 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+    /* Flexible width: stretch to match largest sibling */
+    flex: 1;
+    min-width: 120px; /* ensures button doesn't get too small */
+    height: 40px; /* same height as search bar */
+}
 
+/* Specific button colors */
 .login-btn {
     background-color: #3b82f6;
     color: white;
@@ -66,9 +81,9 @@
     color: white;
 }
 
-    .logout-btn:hover {
-        background-color: #b91c1c;
-    }
+.logout-btn:hover {
+    background-color: #b91c1c;
+}
 
 /* Book list container */
 .books-list {
@@ -96,17 +111,17 @@
     text-align: center;
 }
 
-    .book-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 15px rgba(0,0,0,0.1);
-    }
+.book-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+}
 
-    .book-card h3 {
-        font-size: 1.1rem;
-        font-weight: 600;
-        margin-top: 0.5rem;
-        color: #111827;
-    }
+.book-card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+    color: #111827;
+}
 
 /* No books found text */
 .books-list p {
@@ -127,38 +142,64 @@
     scrollbar-color: #d1d5db transparent;
 }
 
-/* Base button */
+/* Genre buttons */
 .genre-btn {
-    padding: 8px 16px;
-    border-radius: 20px;
-    border: 2px solid transparent;
+    white-space: nowrap;
     background-color: #f3f4f6; /* light gray */
     color: #374151; /* dark gray text */
+    border: 2px solid transparent;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    white-space: nowrap;
+    /* Match header buttons height */
+    height: 40px;
+    flex: 0 0 auto; /* allow natural width for text */
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-    /* Hover effect */
-    .genre-btn:hover {
-        background-color: #e5e7eb;
-        color: #111827;
-    }
+/* Hover effect for genre buttons */
+.genre-btn:hover {
+    background-color: #e5e7eb;
+    color: #111827;
+}
 
-    /* Active (selected genre) */
-    .genre-btn.active {
-        background-color: #3b82f6; /* blue */
-        color: white;
-        border-color: #2563eb;
-        font-weight: 600;
-    }
+/* Active (selected genre) */
+.genre-btn.active {
+    background-color: #3b82f6; /* blue */
+    color: white;
+    border-color: #2563eb;
+    font-weight: 600;
+}
 
-
+/* Book images */
 .book-card img {
-    width: 80px; /* ширина изображения */
-    height: 120px; /* высота изображения */
-    object-fit: cover; /* обрезает лишнее, сохраняя пропорции */
+    width: 80px; /* image width */
+    height: 120px; /* image height */
+    object-fit: cover;
     border-radius: 4px;
-    margin-right: 1rem; /* отступ справа */
+    margin-bottom: 0.5rem; /* spacing below image */
+}
+
+/* Responsive tweaks */
+@media (max-width: 640px) {
+    .home-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .header-buttons {
+        justify-content: center;
+        width: 100%;
+    }
+
+    .header-search-input {
+        width: 100%;
+    }
+
+    .genre-btn {
+        flex: 0 0 auto;
+    }
 }

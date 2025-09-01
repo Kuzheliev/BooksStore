@@ -2,13 +2,14 @@
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import LoginForm from "./Login";
 import AuthProvider, { useAuth } from "./AuthContext";
-import CartProvider from "./CartContext"; // ✅ import CartProvider
+import CartProvider from "./CartContext"; 
 import "./App.css";
 import Home from "./Home";
 import BookDetails from "./BookDetails";
 import CreateBook from "./CreateBook";
 import Cart from "./Cart";
 import EditBook from "./EditBook";
+import CreateAccount from "./CreateAccount";
 
 function LoginPage() {
     const { login } = useAuth();
@@ -38,6 +39,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/login" element={<LoginPage />} />
+                        <Route path="/register" element={<CreateAccount />} />
                         <Route path="/books/:id" element={<BookDetails />} />
                         <Route path="/books/new" element={<CreateBook />} />
                         <Route path="/books/edit/:id" element={<EditBook />} />
