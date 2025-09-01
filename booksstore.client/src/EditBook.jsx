@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./EditBook.css";
+import "./styles/EditBook.css";
 
 function EditBook() {
     const { id } = useParams();

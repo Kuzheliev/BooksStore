@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react
 import LoginForm from "./Login";
 import AuthProvider, { useAuth } from "./AuthContext";
 import CartProvider from "./CartContext"; 
-import "./App.css";
+import "./styles/App.css";
 import Home from "./Home";
 import BookDetails from "./BookDetails";
 import CreateBook from "./CreateBook";

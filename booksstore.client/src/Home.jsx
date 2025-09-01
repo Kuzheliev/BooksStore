@@ -2,8 +2,9 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import axios from "axios";
+import { useCart } from "./CartContext";
 import CreateButton from "./CreateButton";
-import "./Home.css";
+import "./styles/Home.css";
 
 function Home() {
     const { token, logout, user } = useAuth();
@@ -11,6 +12,7 @@ function Home() {
     const [searchQuery, setSearchQuery] = useState("");
     const [genres, setGenres] = useState([]);
     const [selectedGenre, setSelectedGenre] = useState("");
+    const { cart } = useCart();
 
     // Fetch books (with optional filters)
     const fetchBooks = async (search = "", genre = "") => {
@@ -69,7 +71,10 @@ function Home() {
                     <Link to="/cart">
                         <button className="btn cart-btn">Cart</button>
                     </Link>
-
+                    {/* Show small circle if cart is not empty */}
+                    {cart.length > 0 && (
+                        <span className="cart-indicator"></span>
+                    )}
                     {!token ? (
                         <Link to="/login">
                             <button className="btn login-btn">Login</button>

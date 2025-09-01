@@ -2,7 +2,7 @@
 import { useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "./AuthContext";
-import "./BookDetails.css";
+import "./styles/BookDetails.css";
 import { useCart } from "./CartContext";
 
 function BookDetails() {

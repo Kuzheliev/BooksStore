@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import "./Login.css";
+import "./styles/Login.css";
 import { useNavigate } from "react-router-dom";
 function LoginForm({ onLogin }) {
     const [email, setEmail] = useState("");

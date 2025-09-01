@@ -10,10 +10,13 @@
 .home-header {
     display: flex;
     flex-wrap: wrap;
-    align-items: center; /* vertically center search + buttons */
+    align-items: center; /* vertical alignment */
     justify-content: space-between;
-    gap: 1rem;
     margin-bottom: 2rem;
+    gap: 1rem;
+    background-color: #FAD05C; /* dark blue */
+    padding: 1rem 2rem;
+    border-radius: 8px;
 }
 
     .home-header h1 {
@@ -202,4 +205,22 @@
     .genre-btn {
         flex: 0 0 auto;
     }
+}
+
+.cart-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-right: 0.5rem;
+}
+
+.cart-indicator {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 10px;
+    height: 10px;
+    background-color: red;
+    border-radius: 50%;
+    border: 1px solid white;
+    z-index: 10;
 }
