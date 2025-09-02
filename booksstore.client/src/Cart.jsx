@@ -40,7 +40,7 @@ function Cart() {
                                     : "$0.00"}
                             </td>
                             <td>
-                                <button onClick={() => updateQuantity(item.id, -1)}>-</button>
+                                <button onClick={() => updateQuantity(item.id, -1)} disabled={item.quantity <= 1}>-</button>
                                 <span className="quantity">{item.quantity}</span>
                                 <button onClick={() => updateQuantity(item.id, 1)}>+</button>
                             </td>

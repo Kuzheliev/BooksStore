@@ -52,7 +52,7 @@ export default defineConfig({
                 changeOrigin: true,
                 secure: false
             },
-            '^/user': {
+            '^/User': {
                 target,
                 changeOrigin: true,
                 secure: false

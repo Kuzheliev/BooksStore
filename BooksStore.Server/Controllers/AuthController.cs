@@ -61,7 +61,7 @@ namespace BooksStore.Server.Controllers
             {
                 Name = request.Name,
                 Email = request.Email,
-                Phone= request.Phone,
+                Phone = request.Phone,
                 City = request.City,
                 Address = request.Address,
                 Country = request.Country,

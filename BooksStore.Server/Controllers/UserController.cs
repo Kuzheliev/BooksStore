@@ -24,5 +24,16 @@ namespace BooksStore.Server.Controllers
         {
             return _userRepository.GetUsers();
         }
+
+        [HttpGet("{id}")]
+        public ActionResult<Users> GetUserById(int id)
+        {
+            var user = _userRepository.GetUserById(id);
+            if (user == null)
+            {
+                return NotFound(); 
+            }
+            return Ok(user);
+        }
     }
 }

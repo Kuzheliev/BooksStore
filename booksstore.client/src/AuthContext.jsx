@@ -18,6 +18,7 @@ export default function AuthProvider({ children }) {
         if (!userData) return;
 
         const mappedUser = {
+            id: userData.id,
             ...userData,
             isAdmin: userData.IsAdmin || userData.isAdmin || false
         };

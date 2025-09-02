@@ -17,6 +17,11 @@ namespace BooksStore.Server.DAL
             _context = context;
         }
 
+        public Models.Users? GetUserById(int id)
+        {
+            return _context.Users.FirstOrDefault(u => u.Id == id);
+        }
+
         IEnumerable<Models.Users> IUsersRepository.GetUsers()
         {
             return _context.Users.ToList();

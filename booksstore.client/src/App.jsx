@@ -10,6 +10,7 @@ import CreateBook from "./CreateBook";
 import Cart from "./Cart";
 import EditBook from "./EditBook";
 import CreateAccount from "./CreateAccount";
+import CheckOut from "./CheckOut";
 
 function LoginPage() {
     const { login } = useAuth();
@@ -40,6 +41,7 @@ function App() {
                         <Route path="/" element={<Home />} />
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/register" element={<CreateAccount />} />
+                        <Route path="/checkout" element={<CheckOut />} />
                         <Route path="/books/:id" element={<BookDetails />} />
                         <Route path="/books/new" element={<CreateBook />} />
                         <Route path="/books/edit/:id" element={<EditBook />} />
