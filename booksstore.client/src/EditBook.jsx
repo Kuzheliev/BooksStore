@@ -15,6 +15,7 @@ function EditBook() {
     const [genre, setGenre] = useState("");
     const [imageUrl, setImageUrl] = useState("");
     const [imageFile, setImageFile] = useState(null);
+    const [inStock, setInStock] = useState(false);
 
     useEffect(() => {
         const fetchBook = async () => {
@@ -28,6 +29,8 @@ function EditBook() {
                 setPrice(book.price || "");
                 setGenre(book.genre || "");
                 setImageUrl(book.imageUrl || "");
+                setInStock(book.inStock || false);
+
             } catch (err) {
                 console.error("Error fetching book:", err);
                 alert("Failed to fetch book data.");
@@ -47,6 +50,7 @@ function EditBook() {
             formData.append("title", title);
             formData.append("price", parseFloat(price));
             formData.append("genre", genre);
+            formData.append("inStock", inStock ? "true" : "false"); 
             if (imageFile) {
                 formData.append("Image", imageFile);
             }
@@ -126,6 +130,14 @@ function EditBook() {
                         className="preview-image"
                     />
                 )}
+                <label>Stock Status</label>
+                <select
+                    value={inStock ? "true" : "false"}  
+                    onChange={(e) => setInStock(e.target.value === "true")}
+                >
+                    <option value="true">In Stock</option>
+                    <option value="false">Out of Stock</option>
+                </select>
 
                 <button onClick={handleUpdate} className="update-button">
                     Update Book

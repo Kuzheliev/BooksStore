@@ -17,6 +17,8 @@ namespace BooksStore.Server.Models
         public double? Price { get; set; }
 
         public string? Genre { get; set; }
+         
+        public bool inStock { get; set; } = true;
 
         public string? ImageUrl { get; set; }
 

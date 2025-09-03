@@ -169,5 +169,5 @@ D:\workTest\BooksStore\BooksStore.Server\bin\Debug\net8.0\runtimes\browser\lib\n
 D:\workTest\BooksStore\BooksStore.Server\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 D:\workTest\BooksStore\BooksStore.Server\bin\Debug\net8.0\BCrypt.Net-Next.dll
 D:\workTest\BooksStore\BooksStore.Server\obj\Debug\net8.0\BooksStore.Server.sourcelink.json
-D:\workTest\BooksStore\BooksStore.Server\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 D:\workTest\BooksStore\BooksStore.Server\bin\Debug\net8.0\BooksStore.Server.staticwebassets.runtime.json
+D:\workTest\BooksStore\BooksStore.Server\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

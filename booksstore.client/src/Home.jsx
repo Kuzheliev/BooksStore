@@ -139,10 +139,6 @@ function Home() {
                     ))
                 )}
             </div>
-
-            <nav className="main-nav">
-                <Link to="/">Home</Link>
-            </nav>
         </div>
     );
 }

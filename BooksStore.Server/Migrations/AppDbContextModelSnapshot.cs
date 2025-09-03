@@ -39,7 +39,6 @@ namespace BooksStore.Server.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -50,6 +49,9 @@ namespace BooksStore.Server.Migrations
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("inStock")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

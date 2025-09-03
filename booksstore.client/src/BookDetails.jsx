@@ -69,9 +69,15 @@ function BookDetails() {
                         <p><strong>Description:</strong> {book.description || "No description available."}</p>
 
                         <div className="buttons-row">
-                            <button className="add-cart-button" onClick={handleAddToCart}>
-                                {added ? "Added!" : "Add to Cart"}
-                            </button>
+                            {book.inStock ? (
+                                <button className="add-cart-button" onClick={handleAddToCart}>
+                                    {added ? "Added!" : "Add to Cart"}
+                                </button>
+                            ) : (
+                                <button className="add-cart-button disabled" disabled>
+                                    Out of Stock
+                                </button>
+                            )}
 
                             {user?.isAdmin && (
                                 <Link to={`/books/edit/${book.id}`}>

@@ -42,6 +42,7 @@ namespace BooksStore.Server.DAL
             existing.Title = book.Title;
             existing.Price = book.Price;
             existing.Genre = book.Genre;
+            existing.inStock = book.inStock;    
 
             if (!string.IsNullOrEmpty(book.ImageUrl))
                 existing.ImageUrl = book.ImageUrl;
