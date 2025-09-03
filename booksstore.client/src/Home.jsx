@@ -8,44 +8,64 @@ import "./styles/Home.css";
 
 function Home() {
     const { token, logout, user } = useAuth();
-    const [books, setBooks] = useState([]);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [genres, setGenres] = useState([]);
-    const [selectedGenre, setSelectedGenre] = useState("");
     const { cart } = useCart();
 
-    // Fetch books (with optional filters)
-    const fetchBooks = async (search = "", genre = "") => {
-        try {
-            const params = {};
-            if (search) params.search = search;
-            if (genre) params.genre = genre;
+    const [books, setBooks] = useState([]);
+    const [genres, setGenres] = useState([]);
+    const [selectedGenre, setSelectedGenre] = useState("");
+    const [searchQuery, setSearchQuery] = useState("");
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-            const response = await axios.get("/book", { params });
-            setBooks(response.data);
+    // Helper: fetch books with optional search/genre, with retry
+    const fetchBooks = async (search = "", genre = "", retries = 10, delay = 1000) => {
+        setLoading(true);
+        setError(null);
 
-            // Always refresh genres
-            const uniqueGenres = Array.from(
-                new Set(response.data.map(b => b.genre).filter(Boolean))
-            );
-            setGenres(uniqueGenres);
-        } catch (err) {
-            console.error("Error fetching books:", err);
+        for (let i = 0; i < retries; i++) {
+            try {
+                const params = {};
+                if (search) params.search = search;
+                if (genre) params.genre = genre;
+
+                const response = await axios.get("/book", { params });
+                setBooks(response.data);
+
+                // Only update genres on initial load
+                if (!search && !genre) {
+                    const uniqueGenres = Array.from(
+                        new Set(response.data.map(b => b.genre).filter(Boolean))
+                    );
+                    setGenres(uniqueGenres);
+                }
+
+                setLoading(false);
+                return; // success
+            } catch (err) {
+                console.warn(`Fetch attempt ${i + 1} failed. Retrying in ${delay}ms...`);
+                if (i === retries - 1) {
+                    setError("Failed to load books. Server may not be ready.");
+                    setLoading(false);
+                } else {
+                    await new Promise(res => setTimeout(res, delay));
+                }
+            }
         }
     };
 
-    // ✅ Load ALL books on first render
+    // Load all books on first render
     useEffect(() => {
+        if (!token) return;
         fetchBooks();
-    }, []);
+    }, [token]);
 
-    // ✅ Re-fetch when search or genre changes
+    // Re-fetch books on search or genre change (debounced)
     useEffect(() => {
-        const delayDebounce = setTimeout(() => {
+        const timer = setTimeout(() => {
             fetchBooks(searchQuery, selectedGenre);
         }, 300);
 
-        return () => clearTimeout(delayDebounce);
+        return () => clearTimeout(timer);
     }, [searchQuery, selectedGenre]);
 
     return (
@@ -67,14 +87,11 @@ function Home() {
                 <div className="header-buttons">
                     {user?.isAdmin && <CreateButton />}
 
-                    {/* 🛒 Cart Button */}
                     <Link to="/cart">
                         <button className="btn cart-btn">Cart</button>
                     </Link>
-                    {/* Show small circle if cart is not empty */}
-                    {cart.length > 0 && (
-                        <span className="cart-indicator"></span>
-                    )}
+                    {cart.length > 0 && <span className="cart-indicator"></span>}
+
                     {!token ? (
                         <Link to="/login">
                             <button className="btn login-btn">Login</button>
@@ -87,13 +104,13 @@ function Home() {
                 </div>
             </header>
 
-
             {/* Genre Carousel */}
             {genres.length > 0 && (
                 <div className="genres-carousel">
                     <button
                         className={`genre-btn ${selectedGenre === "" ? "active" : ""}`}
-                        onClick={() => setSelectedGenre("")} // resets to show all
+                        onClick={() => setSelectedGenre("")}
+                        aria-pressed={selectedGenre === ""}
                     >
                         All Genres
                     </button>
@@ -104,6 +121,7 @@ function Home() {
                             onClick={() =>
                                 setSelectedGenre(genre === selectedGenre ? "" : genre)
                             }
+                            aria-pressed={selectedGenre === genre}
                         >
                             {genre}
                         </button>
@@ -113,7 +131,11 @@ function Home() {
 
             {/* Books List */}
             <div className="books-list">
-                {books.length === 0 ? (
+                {loading && books.length === 0 ? (
+                    <p>Loading books...</p>
+                ) : error ? (
+                    <p>{error}</p>
+                ) : books.length === 0 ? (
                     <p>No books found.</p>
                 ) : (
                     books.map((book) => (
@@ -129,7 +151,7 @@ function Home() {
                                             ? book.imageUrl.replace(/^\/?wwwroot/, "")
                                             : "/placeholder.png"
                                     }
-                                    alt={book.name}
+                                    alt={book.name || "Book cover"}
                                 />
                                 <h3>{book.name}</h3>
                                 <p>{book.author}</p>
