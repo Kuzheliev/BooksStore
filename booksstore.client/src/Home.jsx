@@ -44,7 +44,7 @@ function Home() {
             } catch (err) {
                 console.warn(`Fetch attempt ${i + 1} failed. Retrying in ${delay}ms...`);
                 if (i === retries - 1) {
-                    setError("Failed to load books. Server may not be ready.");
+                    setError("Failed to load books. Server may not be ready.", err);
                     setLoading(false);
                 } else {
                     await new Promise(res => setTimeout(res, delay));

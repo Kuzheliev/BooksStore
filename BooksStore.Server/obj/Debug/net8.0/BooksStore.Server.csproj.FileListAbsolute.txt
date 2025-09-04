@@ -171,3 +171,7 @@ D:\workTest\BooksStore\BooksStore.Server\bin\Debug\net8.0\BCrypt.Net-Next.dll
 D:\workTest\BooksStore\BooksStore.Server\obj\Debug\net8.0\BooksStore.Server.sourcelink.json
 D:\workTest\BooksStore\BooksStore.Server\bin\Debug\net8.0\BooksStore.Server.staticwebassets.runtime.json
 D:\workTest\BooksStore\BooksStore.Server\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
+D:\workTest\BooksStore\BooksStore.Server\bin\Debug\net8.0\System.Net.Http.Formatting.dll
+D:\workTest\BooksStore\BooksStore.Server\bin\Debug\net8.0\System.Web.Http.dll
+D:\workTest\BooksStore\BooksStore.Server\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\workTest\BooksStore\BooksStore.Server\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll

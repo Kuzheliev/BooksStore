@@ -13,5 +13,6 @@ namespace BooksStore.Server.DAL
         // Each DbSet = a table in your DB
         public DbSet<Users> Users { get; set; }
         public DbSet<Book> Books { get; set; }
+        public DbSet<Order> Orders { get; set; }
     }
 }

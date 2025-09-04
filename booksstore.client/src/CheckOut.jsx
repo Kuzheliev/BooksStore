@@ -11,6 +11,7 @@ function Checkout() {
     const navigate = useNavigate();
 
     const [form, setForm] = useState({
+        name: "",
         email: "",
         phoneNumber: "",
         address: "",
@@ -25,17 +26,16 @@ function Checkout() {
     // Fetch user info by ID
     useEffect(() => {
         if (!user || !token) {
-            setLoading(false); // stop loading until user exists
+            setLoading(false);
             return;
         }
 
         const fetchUser = async () => {
             try {
                 const response = await axios.get(`/User/${user.id}`);
-
-                console.log("Fetched user data:", response.data);
                 setForm(prev => ({
                     ...prev,
+                    name: response.data.name || "",
                     email: response.data.email || "",
                     phoneNumber: response.data.phone || "",
                     address: response.data.address || "",
@@ -57,16 +57,50 @@ function Checkout() {
         setForm({ ...form, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!form.email || !form.phoneNumber || !form.address || !form.city || !form.country) {
+
+        // Validate required fields
+        if (!form.name || !form.email || !form.phoneNumber || !form.address || !form.city || !form.country) {
             alert("Please fill out all required fields.");
             return;
         }
 
-        alert("Order placed successfully! 🎉");
-        clearCart();
-        navigate("/");
+        try {
+            const orderData = {
+                userId: user?.id.toString(),
+                name: form.name,
+                email: form.email,
+                phone: form.phoneNumber,
+                address: form.address,
+                city: form.city,
+                country: form.country,
+                paymentMethod: form.payment,
+                items: cart.map(item => ({
+                    bookId: item.id,
+                    quantity: item.quantity,
+                    price: item.price,
+                })),
+                price: getTotal(),
+            };
+
+            console.log("Placing order with data:", orderData);
+
+            await axios.post("/Order", orderData, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            });
+
+            alert("Order placed successfully! 🎉");
+            console.log(clearCart);
+            clearCart();
+            navigate("/");
+        } catch (err) {
+            console.error("Error placing order:", err);
+            alert("Something went wrong while placing your order.");
+        }
     };
 
     if (loading) return <p className="loading">Loading user info...</p>;
@@ -79,6 +113,10 @@ function Checkout() {
             <div className="checkout-content">
                 <form className="checkout-form" onSubmit={handleSubmit}>
                     <h3>Contact Information</h3>
+                    <label>
+                        Name:
+                        <input type="text" name="name" value={form.name} onChange={handleChange} required />
+                    </label>
                     <label>
                         Email:
                         <input type="email" name="email" value={form.email} onChange={handleChange} required />

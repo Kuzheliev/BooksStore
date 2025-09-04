@@ -6,6 +6,8 @@ const CartContext = createContext();
 // Custom hook to use the cart context
 export const useCart = () => useContext(CartContext);
 
+
+
 // Provider component
 const CartProvider = ({ children }) => {
     // Initialize cart from localStorage
@@ -54,13 +56,15 @@ const CartProvider = ({ children }) => {
         );
     };
 
+    const clearCart = () => setCart([]);
+
     // Calculate total price
     const getTotal = () =>
         cart.reduce((sum, item) => sum + (item.price || 0) * item.quantity, 0);
 
     return (
         <CartContext.Provider
-            value={{ cart, addToCart, removeFromCart, updateQuantity, getTotal }}
+            value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart, getTotal }}
         >
             {children}
         </CartContext.Provider>

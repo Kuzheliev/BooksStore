@@ -12,6 +12,8 @@ namespace BooksStore.Server.DAL
 
         Task<Book?> GetBookByIdAsync(int id);
 
-         Task<Book> CreateAsync(Book book);
+        Task<Book> CreateAsync(Book book);
+    
+            
     }
 }

@@ -67,6 +67,11 @@ export default defineConfig({
                 changeOrigin: true,
                 secure: false
             },
+            '^/Order': {
+                target,
+                changeOrigin: true,
+                secure: false
+            },
             '/images': {
                 target,
                 changeOrigin: true,
