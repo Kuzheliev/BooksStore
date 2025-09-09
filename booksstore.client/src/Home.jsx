@@ -86,12 +86,12 @@ function Home() {
 
                 <div className="header-buttons">
                     {user?.isAdmin && <CreateButton />}
-
-                    <Link to="/cart">
-                        <button className="btn cart-btn">Cart</button>
-                    </Link>
-                    {cart.length > 0 && <span className="cart-indicator"></span>}
-
+                    <div className="cart-wrapper">
+                        <Link to="/cart">
+                            <button className="btn cart-btn">Cart</button>
+                        </Link>
+                        {cart.length > 0 && <span className="cart-indicator"></span>}
+                    </div>
                     {!token ? (
                         <Link to="/login">
                             <button className="btn login-btn">Login</button>

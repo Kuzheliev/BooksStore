@@ -179,11 +179,21 @@
 
 /* Book images */
 .book-card img {
-    width: 80px; /* image width */
-    height: 120px; /* image height */
+    width: 100%;
+    max-width: 120px;
+    height: auto; 
     object-fit: cover;
     border-radius: 4px;
     margin-bottom: 0.5rem; /* spacing below image */
+}
+
+.genres-carousel::-webkit-scrollbar {
+    height: 6px;
+}
+
+.genres-carousel::-webkit-scrollbar-thumb {
+    background-color: #d1d5db;
+    border-radius: 3px;
 }
 
 /* Responsive tweaks */
@@ -210,13 +220,13 @@
 .cart-wrapper {
     position: relative;
     display: inline-block;
-    margin-right: 0.5rem;
 }
 
 .cart-indicator {
     position: absolute;
-    top: -4px;
-    right: -4px;
+    bottom: 0; /* align to bottom of button */
+    right: 0; /* align to right of button */
+    transform: translate(50%, 50%); /* push it slightly outside corner */
     width: 10px;
     height: 10px;
     background-color: red;
