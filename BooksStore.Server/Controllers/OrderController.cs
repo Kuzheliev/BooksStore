@@ -1,4 +1,5 @@
-﻿using BooksStore.Server.DAL;
+﻿using BooksStore.Server.BLL;
+using BooksStore.Server.DAL;
 using BooksStore.Server.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,12 +10,12 @@ namespace BooksStore.Server.Controllers
     [ApiController]
     public class OrderController : ControllerBase
     {
-        private readonly IOrderRepository _orderRepository;
+        private readonly IOrderBusinessLogic _orderBl;
         private readonly ILogger<OrderController> _logger;
 
-        public OrderController(IOrderRepository orderRepository, ILogger<OrderController> logger)
+        public OrderController(IOrderBusinessLogic orderBl, ILogger<OrderController> logger)
         {
-            _orderRepository = orderRepository;
+            _orderBl = orderBl;
             _logger = logger;
         }
 
@@ -24,7 +25,7 @@ namespace BooksStore.Server.Controllers
         {
             if (order == null) return BadRequest("Order cannot be null.");
 
-            var created = await _orderRepository.AddAsync(order);
+            var created = await _orderBl.CreateOrderAsync(order);
             return CreatedAtAction(nameof(GetOrderById), new { id = created.Id }, created);
         }
 
@@ -32,7 +33,7 @@ namespace BooksStore.Server.Controllers
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetOrderById(int id)
         {
-            var order = await _orderRepository.GetByIdAsync(id);
+            var order = await _orderBl.GetOrderByIdAsync(id);
             if (order == null) return NotFound();
 
             return Ok(order);
@@ -42,7 +43,7 @@ namespace BooksStore.Server.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllOrders()
         {
-            var orders = await _orderRepository.GetAllAsync();
+            var orders = await _orderBl.GetAllOrdersAsync();
             return Ok(orders);
         }
 
@@ -52,7 +53,8 @@ namespace BooksStore.Server.Controllers
         {
             if (order == null || id != order.Id) return BadRequest("Invalid order data.");
 
-            var updated = await _orderRepository.UpdateAsync(order);
+            var updated = await _orderBl.UpdateOrderAsync(order);
+
             if (updated == null) return NotFound();
 
             return Ok(updated);

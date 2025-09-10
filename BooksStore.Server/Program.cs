@@ -1,3 +1,4 @@
+using BooksStore.Server.BLL;
 using BooksStore.Server.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
@@ -12,8 +13,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+builder.Services.AddScoped<IUserBusinessLogic, UserBusinessLogic>();
+builder.Services.AddScoped<IBookBusinessLogic, BookBusinessLogic>();
+builder.Services.AddScoped<IOrderBusinessLogic, OrderBusinessLogic>();
 builder.Services.AddScoped<IBooksRepository, BookRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IAuthBusinessLogic, AuthBusinessLogic>();
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

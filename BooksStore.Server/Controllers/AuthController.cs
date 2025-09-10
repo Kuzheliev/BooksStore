@@ -1,4 +1,5 @@
-﻿using BooksStore.Server.DAL;
+﻿using BooksStore.Server.BLL;
+using BooksStore.Server.DAL;
 using BooksStore.Server.Migrations;
 using BooksStore.Server.Models;
 using Microsoft.AspNetCore.Http;
@@ -17,13 +18,13 @@ namespace BooksStore.Server.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly AppDbContext _context;
         private readonly IConfiguration _config;
         private readonly ILogger<AuthController> _logger;
+        private readonly IAuthBusinessLogic _authBusinessLogic;
 
-        public AuthController(AppDbContext context, IConfiguration config, ILogger<AuthController> logger)
+        public AuthController(IAuthBusinessLogic authBusinessLogic, IConfiguration config, ILogger<AuthController> logger)
         {
-            _context = context;
+            _authBusinessLogic = authBusinessLogic;
             _config = config;
             _logger = logger;
         }
@@ -31,86 +32,19 @@ namespace BooksStore.Server.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(Models.LoginRequest request)
         {
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == request.Email);
+            var response = await _authBusinessLogic.Login(request);
 
-            if (user == null) return Unauthorized();
+            if (response == null)
+                return Unauthorized("Invalid email or password.");
 
-            var hasher = new PasswordHasher<Models.Users>();
-            var result = hasher.VerifyHashedPassword(user, user.Password, request.Password);
-
-            if (result == PasswordVerificationResult.Failed)
-                return Unauthorized();
-
-            var token = GenerateJwtToken(user);
-            return Ok(new { token, user = new { user.Id, user.Email, user.IsAdmin, user.Name } });
+            return Ok(response);
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(Models.Users request)
         {
-            // Check if email already exists
-            if (await _context.Users.AnyAsync(u => u.Email == request.Email))
-            {
-                return BadRequest(new { message = "Email is already registered." });
-            }
-
-            var hasher = new PasswordHasher<Models.Users>();
-
-            var user = new Models.Users
-            {
-                Name = request.Name,
-                Email = request.Email,
-                Phone = request.Phone,
-                City = request.City,
-                Address = request.Address,
-                Country = request.Country,
-                IsAdmin = false // default
-            };
-
-            // Hash the password
-            user.Password = hasher.HashPassword(user, request.Password);
-
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            var token = GenerateJwtToken(user);
-
-            return Ok(new
-            {
-                token,
-                user = new
-                {
-                    user.Id,
-                    user.Email,
-                    user.IsAdmin,
-                    user.Name,
-                    user.City,
-                    user.Country
-                }
-            });
-        }
-
-
-        private string GenerateJwtToken(Models.Users user)
-        {
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString())
-        };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                _config["Jwt:Issuer"],
-                _config["Jwt:Issuer"],
-                claims,
-                expires: DateTime.Now.AddHours(1),
-                signingCredentials: creds);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var response = await _authBusinessLogic.Register(request);
+            return Ok(response);
         }
     }
 }
