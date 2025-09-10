@@ -11,6 +11,7 @@ import Cart from "./Cart";
 import EditBook from "./EditBook";
 import CreateAccount from "./CreateAccount";
 import CheckOut from "./CheckOut";
+import OrdersPage from "./OrdersPage";
 
 function LoginPage() {
     const { login } = useAuth();
@@ -45,6 +46,7 @@ function App() {
                         <Route path="/books/:id" element={<BookDetails />} />
                         <Route path="/books/new" element={<CreateBook />} />
                         <Route path="/books/edit/:id" element={<EditBook />} />
+                        <Route path="/orders" element={<OrdersPage />} />
                         <Route path="/cart" element={<Cart />} />
                         <Route path="*" element={<p>Page not found!</p>} />
                     </Routes>

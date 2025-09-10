@@ -1,0 +1,36 @@
+.orders-table-wrapper {
+    overflow-x: auto; /* horizontal scroll */
+    max-height: 70vh; /* vertical scroll */
+    overflow-y: auto;
+    border: 1px solid #444;
+    border-radius: 4px;
+}
+
+.orders-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 1200px; /* ensures horizontal scroll on smaller screens */
+}
+
+    .orders-table th,
+    .orders-table td {
+        border: 1px solid #444;
+        padding: 0.5rem 1rem;
+        text-align: left;
+    }
+
+    .orders-table th {
+        background-color: #333;
+        position: sticky;
+        top: 0; /* keeps header visible while scrolling vertically */
+        z-index: 1;
+    }
+
+    .orders-table ul {
+        padding-left: 1rem;
+        margin: 0;
+    }
+
+    .orders-table li {
+        list-style: disc;
+    }

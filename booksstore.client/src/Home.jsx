@@ -4,6 +4,7 @@ import { useAuth } from "./AuthContext";
 import axios from "axios";
 import { useCart } from "./CartContext";
 import CreateButton from "./CreateButton";
+import OrderButton from "./OrderButton";
 import "./styles/Home.css";
 
 function Home() {
@@ -92,6 +93,7 @@ function Home() {
                         </Link>
                         {cart.length > 0 && <span className="cart-indicator"></span>}
                     </div>
+                    {user?.isAdmin && <OrderButton />} 
                     {!token ? (
                         <Link to="/login">
                             <button className="btn login-btn">Login</button>
